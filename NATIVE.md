@@ -44,18 +44,32 @@ open ios/App/App.xcworkspace     # MUST open the .xcworkspace, not the .xcodepro
 You now have a real app icon on your home screen — launches full-screen, offline, haptics
 on lens/theme taps. It lasts 90 days per build; rebuild + re-upload to refresh.
 
-## Updates (when content changes)
+## Updates — two kinds
 
-When you (or Claude) edit the web files (lenses, settings, etc.):
+### Content edits (lenses, settings, copy) — NO Xcode needed
+The app checks for a live JS-bundle update on every launch (via `@capgo/capacitor-updater`,
+self-hosted on `raw.githubusercontent.com`). After the one-time native archive below bakes
+the plugin in, content changes ship with three commands:
 
 ```bash
 cd "/Users/floydrocker/Library/Mobile Documents/com~apple~CloudDocs/Leica App"
-npm run sync
-open ios/App/App.xcworkspace    # then Archive → Distribute → Upload, as above
+node scripts/publish-update.js        # syncs dist/, zips a versioned bundle, bumps manifest version
+git add -A && git commit -m "Live update v1.0.x" && git push
 ```
 
-TestFlight auto-offers the update; one tap installs it. No review, no App Store listing.
-Internal TestFlight builds don't go through review.
+Push → `raw.githubusercontent.com` serves the new manifest + bundle → on the next app
+launch on your phone it downloads in the background and applies (reload or next launch).
+No TestFlight, no archive. Claude can run this for you too.
+
+### Native changes (plugins, icon, signing, app shell) — Xcode needed
+Only when something native changes (new Capacitor plugin, app icon, deployment target,
+the launch-crash fix kind of thing): re-run `npm run sync`, then Archive → Distribute →
+Upload as in the install steps, and update via TestFlight.
+
+## One final archive required to enable live updates
+The updater plugin must be baked into the native binary. So do **one more** Archive +
+TestFlight upload now (same steps as the original install). After that build is on your
+phone, all content edits ship live — no more archiving for content.
 
 ## Notes / gotchas
 
@@ -64,9 +78,9 @@ Internal TestFlight builds don't go through review.
 - **Locale:** if `pod install` ever fails with a Unicode/encoding error, run it with
   `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 pod install` inside `ios/App/`. Xcode's own builds
   are unaffected once Pods are installed.
-- **iCloud path:** the project lives in an iCloud-synced folder. That's fine for source,
-  but if Xcode acts strangely (stale builds), move the whole folder out of iCloud to
-  `~/Developer/leica-m11-ref` and work there. Build output is already gitignored.
-- **Live updates (optional, later):** Capacitor Updater can push JS-only content changes
-  straight to the installed app without re-archiving — so editing a lens setting ships in
-  seconds, no Xcode. Ask to set this up once the basic install works.
+- **iCloud path:** the project lives in an iCloud-synced folder. Fine for source; if Xcode
+  acts strangely (stale builds), move the folder to `~/Developer/leica-m11-ref`. Build
+  output is already gitignored.
+- **iOS 27 scene lifecycle:** the app uses a `SceneDelegate` (in `AppDelegate.swift`) +
+  `UIApplicationSceneManifest` in Info.plist. Don't remove these — Xcode 27 traps the
+  classic non-scene lifecycle at launch.
