@@ -6,7 +6,7 @@
   "ios": {
     "contentInset": "always",
     "backgroundColor": "#090b0e",
-    "scrollEnabled": false,
+    "scrollEnabled": true,
     "limitsNavigationsToAppBoundDomains": true
   },
   "plugins": {
