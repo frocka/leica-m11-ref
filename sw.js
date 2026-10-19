@@ -1,5 +1,5 @@
 // sw.js — offline cache for the field reference. Stale-while-revalidate.
-const CACHE = 'leica-m11-v1';
+const CACHE = 'leica-m11-v2';
 const ASSETS = ['index.html', 'styles.css', 'data.js', 'optics.js', 'app.js', 'icon.svg', 'manifest.json'];
 
 self.addEventListener('install', e => {
