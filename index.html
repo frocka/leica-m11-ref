@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#090b0e">
+<title>M11 Monochrom — Field Reference</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="grain"></div>
+<div class="c">
+
+<nav class="nav">
+  <a href="#lens">Lens</a>
+  <a href="#specs">At a Glance</a>
+  <a href="#distance">Distance & Framing</a>
+  <a href="#dof">Zone Focus</a>
+  <a href="#aperture">Aperture</a>
+  <a href="#focus">Focus</a>
+  <a href="#scenarios">Scenarios</a>
+  <a href="#recommender">Recommender</a>
+  <a href="#glass">Your Glass</a>
+</nav>
+
+<div class="hdr">
+  <div class="tag">M11 Monochrom · Field Reference</div>
+  <h1>Four Lenses,<br><em>Every Light</em></h1>
+  <div class="sub">A go-to reference for the Leica M11 Monochrom and the four lenses in the bag. Pick a lens, check the light, read the settings. Built for the field — shadows, darks, grain embraced.</div>
+</div>
+
+<!-- LENS SWITCHER -->
+<div class="sec" id="lens">
+  <div class="sec-label">The Kit</div>
+  <div class="sec-title">Pick a Lens</div>
+  <div class="sec-desc">Selecting a lens re-renders the optics tables below for that focal length. Your choice is remembered on this device.</div>
+  <div class="lens-switch" id="lensSwitch"></div>
+</div>
+
+<!-- AT A GLANCE -->
+<div class="sec" id="specs">
+  <div class="sec-label">At a Glance</div>
+  <div class="lens-context" id="specsContext"></div>
+  <div class="hero-stats" id="heroStats"></div>
+  <div class="tip mono" id="monoNote"></div>
+  <div class="tip flare" id="flareNote"></div>
+</div>
+
+<!-- DISTANCE & FRAMING -->
+<div class="sec" id="distance">
+  <div class="sec-label">Distance & Framing</div>
+  <div class="sec-title">What You Get at Each Distance</div>
+  <div class="sec-desc">Width covered across the frame at each subject distance, computed from the lens's horizontal field of view. Learn the key ones and you can frame without the viewfinder.</div>
+  <div class="dist-grid" id="distGrid"></div>
+  <div class="tip"><p id="distTip"></p></div>
+</div>
+
+<!-- ZONE FOCUS -->
+<div class="sec" id="dof">
+  <div class="sec-label">Zone Focus Reference</div>
+  <div class="sec-title" id="dofTitle">Depth of Field at Every Aperture</div>
+  <div class="sec-desc" id="dofDesc"></div>
+  <div class="coc-toggle">
+    <span>Circle of confusion:</span>
+    <button id="cocStd" class="active">0.030 · standard</button>
+    <button id="cocStrict">0.015 · 60MP strict</button>
+  </div>
+  <div class="dof-grid" id="dofGrid"></div>
+  <div class="rec" style="margin-top:20px">
+    <h3 style="font-family:'Instrument Serif',serif;font-size:22px;color:var(--blue);margin-bottom:4px">Hyperfocal Cheat Sheet</h3>
+    <div class="config-sub" style="font-size:11px;color:var(--dim);font-family:'Inter',sans-serif;margin-bottom:18px">Focus at these distances — everything from half-distance to ∞ stays sharp.</div>
+    <div class="rec-grid" id="hyperGrid"></div>
+  </div>
+</div>
+
+<!-- APERTURE -->
+<div class="sec" id="aperture">
+  <div class="sec-label">Aperture Character</div>
+  <div class="sec-title">How Each f/stop Renders</div>
+  <div class="sec-desc" id="apDesc"></div>
+  <div class="ap-grid" id="apGrid"></div>
+</div>
+
+<!-- FOCUS -->
+<div class="sec" id="focus">
+  <div class="sec-label">Focus by Feel</div>
+  <div class="sec-title" id="focusTitle">The Focus Tab Positions</div>
+  <div class="sec-desc" id="focusDesc"></div>
+  <div class="tab-visual" id="focusVisual"></div>
+  <div class="tip" id="focusTip"></div>
+</div>
+
+<!-- SCENARIOS -->
+<div class="sec" id="scenarios">
+  <div class="sec-label">Scenarios × Light</div>
+  <div class="sec-title">Settings by Situation</div>
+  <div class="sec-desc">Pick the light, then expand a scenario for per-lens settings. The condition dial shifts ISO and shutter guidance without changing the curated base.</div>
+  <div class="cond-dial" id="condDial"></div>
+  <div class="cond-note" id="condNote"></div>
+  <div class="scene-grid" id="sceneGrid"></div>
+</div>
+
+<!-- RECOMMENDER -->
+<div class="sec" id="recommender">
+  <div class="sec-label">Lens Recommender</div>
+  <div class="sec-title">Which Lens Right Now</div>
+  <div class="sec-desc">Tell it what you're shooting and the light you're in. It picks the lens to put on, says why, and gives starting settings.</div>
+  <div class="rec">
+    <div class="rec-pickers">
+      <div>
+        <label>Scenario</label>
+        <select id="recScenario"></select>
+      </div>
+      <div>
+        <label>Light</label>
+        <select id="recCondition"></select>
+      </div>
+    </div>
+    <div class="rec-out" id="recOut"></div>
+  </div>
+</div>
+
+<!-- YOUR GLASS -->
+<div class="sec" id="glass">
+  <div class="sec-label">Your Glass</div>
+  <div class="sec-title">The Four Lenses</div>
+  <div class="sec-desc">Every lens in the bag, with Monochrom-specific pros, cons, and the carry case for each.</div>
+  <div class="lens-grid" id="lensCompare"></div>
+</div>
+
+<div class="ftr">Leica M11 Monochrom — Field Reference · Four lenses, every light</div>
+
+</div>
+
+<script src="optics.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

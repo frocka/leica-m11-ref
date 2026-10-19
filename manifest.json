@@ -1,0 +1,13 @@
+{
+  "name": "M11 Monochrom Field Reference",
+  "short_name": "M11 Ref",
+  "description": "Lens, light, and settings reference for the Leica M11 Monochrom.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#090b0e",
+  "theme_color": "#090b0e",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

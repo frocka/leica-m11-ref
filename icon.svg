@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#090b0e"/>
+  <!-- lens body -->
+  <circle cx="256" cy="256" r="150" fill="none" stroke="#dde4ea" stroke-width="14"/>
+  <circle cx="256" cy="256" r="110" fill="none" stroke="#4890d8" stroke-width="10"/>
+  <circle cx="256" cy="256" r="70" fill="#111418" stroke="#668" stroke-width="6"/>
+  <!-- aperture blades hint -->
+  <circle cx="256" cy="256" r="34" fill="#090b0e" stroke="#d09830" stroke-width="4"/>
+  <!-- top plate mark -->
+  <rect x="236" y="78" width="40" height="16" rx="3" fill="#dde4ea"/>
+  <text x="256" y="430" font-family="monospace" font-size="28" fill="#668" text-anchor="middle" letter-spacing="6">M11</text>
+</svg>
