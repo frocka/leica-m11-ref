@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.10.2)
   - Capacitor (6.2.2):
     - CapacitorCordova
   - CapacitorApp (6.0.3):
@@ -6,12 +7,26 @@ PODS:
   - CapacitorCordova (6.2.2)
   - CapacitorHaptics (6.0.3):
     - Capacitor
+  - CapgoCapacitorUpdater (6.51.23):
+    - Alamofire (= 5.10.2)
+    - Capacitor
+    - Version (= 0.8.0)
+    - ZIPFoundation (~> 0.9)
+  - Version (0.8.0)
+  - ZIPFoundation (0.9.20)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
+  - "CapgoCapacitorUpdater (from `../../node_modules/@capgo/capacitor-updater`)"
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Version
+    - ZIPFoundation
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -22,13 +37,19 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorHaptics:
     :path: "../../node_modules/@capacitor/haptics"
+  CapgoCapacitorUpdater:
+    :path: "../../node_modules/@capgo/capacitor-updater"
 
 SPEC CHECKSUMS:
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   Capacitor: 6591a78b923b7e6dde28506ffeea820356e68013
   CapacitorApp: a19ccb4f5f32d2534be5c6f524d5a9b614a1e8a7
   CapacitorCordova: c2c76283b5c00cf6073bab0b1311e3b10bd17254
   CapacitorHaptics: 40f83026feeee9cfe36e89e9c98a3baaaf20c450
+  CapgoCapacitorUpdater: fe6a7c0363f2aa616e17e1b1b809c2e3abf902cf
+  Version: de5907f2c5d0f3cf21708db7801d1d5401139486
+  ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
 
-PODFILE CHECKSUM: f6d7a62d7a63db5e81798fa4851be3ed16a90bb4
+PODFILE CHECKSUM: 20c2f59e32b98db0c67f4c9951a2ac2eeb17cb63
 
 COCOAPODS: 1.17.0

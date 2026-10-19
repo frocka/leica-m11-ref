@@ -22,6 +22,42 @@
     } catch (e) { /* no-op */ }
   }
 
+  // Live update check (native only). Pulls a manifest from raw.githubusercontent.com
+  // (CORS *), compares semver, and if newer downloads + activates the JS bundle via
+  // @capgo/capacitor-updater. No-op on the web PWA.
+  const MANIFEST_URL = 'https://raw.githubusercontent.com/frocka/leica-m11-ref/main/updates/manifest.json';
+  function semverGt(a, b) {
+    const pa = String(a).split('.').map(Number);
+    const pb = String(b).split('.').map(Number);
+    for (let i = 0; i < 3; i++) {
+      if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) > (pb[i] || 0);
+    }
+    return false;
+  }
+  async function checkForUpdate() {
+    try {
+      const Cap = window.Capacitor;
+      if (!Cap || !Cap.isNativePlatform || !Cap.isNativePlatform()) return;
+      const U = Cap.Plugins && Cap.Plugins.CapacitorUpdater;
+      if (!U) return;
+      // Mark the current bundle healthy so the plugin doesn't roll back.
+      if (U.notifyAppReady) await U.notifyAppReady();
+      const current = localStorage.getItem('leica.bundleVersion') || '1.0.0';
+      const res = await fetch(MANIFEST_URL, { cache: 'no-store' });
+      if (!res.ok) return;
+      const m = await res.json();
+      if (!m || !m.version || !m.url) return;
+      if (!semverGt(m.version, current)) return;
+      const dl = await U.download({ url: m.url, checksum: m.checksum });
+      const id = dl && (dl.bundleId || dl.id);
+      if (!id) return;
+      await U.set({ id });
+      localStorage.setItem('leica.bundleVersion', m.version);
+      // Apply now if the plugin supports it; otherwise it activates on next launch.
+      if (U.reload) await U.reload();
+    } catch (e) { /* update failure is non-fatal — keep running the current bundle */ }
+  }
+
   // ---- framing labels per focal length (curated; widths computed) ----
   const FRAMING = {
     21: [
@@ -356,9 +392,11 @@
     bindCoc();
     bindTheme();
     renderAll();
-    // register service worker for offline
+    // register service worker for offline (web only — native app uses the updater plugin)
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }
+    // check for a live JS-bundle update (native only; no-op on web)
+    checkForUpdate();
   });
 })();
