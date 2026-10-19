@@ -1,0 +1,19 @@
+{
+  "appId": "app.floydrocker.leicam11",
+  "appName": "M11 Monochrom",
+  "webDir": "dist",
+  "backgroundColor": "#090b0e",
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#090b0e",
+    "scrollEnabled": false,
+    "limitsNavigationsToAppBoundDomains": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 600,
+      "backgroundColor": "#090b0e",
+      "showSpinner": false
+    }
+  }
+}

@@ -12,6 +12,16 @@
   const lens = () => LENSES.find(l => l.id === activeLensId);
   const fstop = n => (n % 1 === 0 ? 'f/' + n : 'f/' + n);
 
+  // Native haptic feedback (only fires inside the Capacitor iOS shell; no-op on web).
+  function haptic(style) {
+    try {
+      const Cap = window.Capacitor;
+      if (!Cap || !Cap.isNativePlatform || !Cap.isNativePlatform()) return;
+      const H = Cap.Plugins && Cap.Plugins.Haptics;
+      if (H && H.impact) H.impact({ style: style || 'LIGHT' });
+    } catch (e) { /* no-op */ }
+  }
+
   // ---- framing labels per focal length (curated; widths computed) ----
   const FRAMING = {
     21: [
@@ -55,7 +65,7 @@
         <div class="lc-meta">${l.focalMm}mm · ${fstop(l.maxAperture)} · ${l.filter}</div>
       </div>`).join('');
     el.querySelectorAll('.lens-chip').forEach(c => {
-      c.onclick = () => { activeLensId = c.dataset.id; localStorage.setItem('leica.activeLens', activeLensId); renderAll(); };
+      c.onclick = () => { activeLensId = c.dataset.id; localStorage.setItem('leica.activeLens', activeLensId); haptic('LIGHT'); renderAll(); };
     });
   }
 
@@ -320,6 +330,7 @@
   function bindTheme() {
     applyThemeIcon();
     document.getElementById('themeToggle').onclick = () => {
+      haptic('MEDIUM');
       const cur = document.documentElement.getAttribute('data-theme');
       const next = cur === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', next);
