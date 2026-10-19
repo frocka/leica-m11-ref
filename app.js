@@ -312,6 +312,22 @@
     if (cocMode === O.COC.strict) { strict.classList.add('active'); std.classList.remove('active'); }
   }
 
+  // ---- theme toggle ----
+  function applyThemeIcon() {
+    const t = document.documentElement.getAttribute('data-theme');
+    document.getElementById('themeIcon').textContent = t === 'light' ? '☾' : '☀';
+  }
+  function bindTheme() {
+    applyThemeIcon();
+    document.getElementById('themeToggle').onclick = () => {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('leica.theme', next);
+      applyThemeIcon();
+    };
+  }
+
   // ---- render all ----
   function renderAll() {
     renderLensSwitch();
@@ -327,6 +343,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     bindCoc();
+    bindTheme();
     renderAll();
     // register service worker for offline
     if ('serviceWorker' in navigator) {
