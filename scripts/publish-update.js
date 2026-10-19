@@ -11,19 +11,10 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const UPDATES = path.join(ROOT, 'updates');
 const MANIFEST = path.join(UPDATES, 'manifest.json');
-const BUNDLE_ZIP = path.join(UPDATES, 'bundle.zip');
 const RAW_BASE = 'https://raw.githubusercontent.com/frocka/leica-m11-ref/main/updates';
 
 // 1. sync web assets into dist/
 execSync('node scripts/sync-web.js', { stdio: 'inherit', cwd: ROOT });
-
-// 2. zip dist/ contents (index.html at root)
-fs.rmSync(UPDATES, { recursive: true, force: true });
-fs.mkdirSync(UPDATES, { recursive: true });
-execSync(`zip -X -r "${BUNDLE_ZIP}" . -x '*.DS_Store'`, { cwd: DIST, stdio: 'pipe' });
-
-// 3. sha256 checksum
-const shasum = execSync(`shasum -a 256 "${BUNDLE_ZIP}"`).toString().trim().split(/\s+/)[0];
 
 // 4. version: arg, else patch-bump from existing manifest, else 1.0.1
 let version = process.argv[2];
@@ -36,10 +27,23 @@ if (!version) {
   version = `${maj}.${min}.${(pat || 0) + 1}`;
 }
 
-// 5. write manifest
+// 2. zip dist/ contents into a versioned filename (unique URL defeats CDN caching)
+fs.mkdirSync(UPDATES, { recursive: true });
+// remove previous bundle zips so only the current version ships
+for (const f of fs.readdirSync(UPDATES)) {
+  if (/^bundle-.*\.zip$/.test(f)) fs.rmSync(path.join(UPDATES, f));
+}
+const bundleName = `bundle-${version}.zip`;
+const BUNDLE_ZIP = path.join(UPDATES, bundleName);
+execSync(`zip -X -r "${BUNDLE_ZIP}" . -x '*.DS_Store'`, { cwd: DIST, stdio: 'pipe' });
+
+// 3. sha256 checksum
+const shasum = execSync(`shasum -a 256 "${BUNDLE_ZIP}"`).toString().trim().split(/\s+/)[0];
+
+// 5. write manifest (versioned bundle URL — unique per version, defeats CDN caching)
 const manifest = {
   version,
-  url: `${RAW_BASE}/bundle.zip`,
+  url: `${RAW_BASE}/${bundleName}`,
   checksum: shasum,
 };
 fs.writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + '\n');

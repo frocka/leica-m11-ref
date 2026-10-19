@@ -43,7 +43,7 @@
       // Mark the current bundle healthy so the plugin doesn't roll back.
       if (U.notifyAppReady) await U.notifyAppReady();
       const current = localStorage.getItem('leica.bundleVersion') || '1.0.0';
-      const res = await fetch(MANIFEST_URL, { cache: 'no-store' });
+      const res = await fetch(`${MANIFEST_URL}?t=${Date.now()}`, { cache: 'no-store' });
       if (!res.ok) return;
       const m = await res.json();
       if (!m || !m.version || !m.url) return;
